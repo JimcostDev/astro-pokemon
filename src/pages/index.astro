@@ -1,0 +1,40 @@
+---
+// Esto es el frontmatter (---)
+
+// server side only - build time
+// Renderizado en el servidor: El contenido se genera en el servidor y se envía como HTML estático al cliente.
+// Sin JavaScript en el cliente: No se requiere JavaScript para mostrar el contenido inicial.
+// Mejor para SEO: El contenido está disponible en el HTML inicial, lo que facilita su indexación por motores de búsqueda.
+
+import PokemonCard from '../components/pokemons/PokemonCard.astro';
+import type { PokemonListResponse } from '../interfaces/pokemon-list';
+import Layout from '../layouts/Layout.astro';
+const titulo = 'Home'
+
+const resp = await fetch('https://pokeapi.co/api/v2/pokemon');
+const data = (await resp.json()) as PokemonListResponse;
+
+---
+
+<Layout title={titulo}>
+	<h1 class="text-3xl font-bold mb-4 text-center">Listado Pokémons</h1>
+	<hr class="my-4 border-b-2 border-slate-500">
+
+	<section aria-label="Listado de Pokémons" 
+		class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-5 gap-4"
+	>
+		{data.results.map(({name, url}) => 
+		<PokemonCard 
+			name={name}
+			url={url}
+		/> 
+		)}
+	</section>
+	
+	<script>
+		// client only - run time
+		// Ejecutado en el navegador: El código se ejecuta después de que la página se ha cargado en el cliente.
+		// Requiere JavaScript: El navegador debe tener JavaScript habilitado para ejecutar este código.
+		// Interactividad: Se utiliza para agregar interactividad o manipular el DOM después de la carga inicial.
+	</script>
+</Layout>

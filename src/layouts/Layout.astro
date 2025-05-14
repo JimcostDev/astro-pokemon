@@ -1,0 +1,47 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import '../styles/global.css'
+import { siteInfo } from '../consts/site.info';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+} // se utiliza para definir la forma y los tipos de las propiedades esperadas.
+
+const { 
+	title = siteInfo.title,
+  	description = siteInfo.description,
+  	image, 
+} = Astro.props; //  se utiliza para acceder a los valores reales de las propiedades dentro del componente.
+
+// metadatos base
+const pageTitle = `${title} | Pokémon`;
+---
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+
+		 <!-- SEO -->
+		 <meta name="description" content={description} />
+		 <meta name="author" content={'Ronaldo Jiménez'} />
+	 
+		 <!-- OG Metatags -->
+		 <meta property="og:title" content={title} />
+		 <meta property="og:description" content={description} />
+		 <meta property="og:image" content={image} />
+
+		<title>{pageTitle}</title>
+		<ClientRouter />
+	</head>
+	<body class="bg-slate-900 text-slate-100 mx-auto">
+		<main id="main-content" class="max-w-5xl p-4 my-10 mx-auto">
+			<slot />
+		</main>
+	</body>
+</html>
+
